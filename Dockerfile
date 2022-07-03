@@ -51,6 +51,4 @@ RUN `
     nvm install %NODE_VERSION% `
     && (nvm use %NODE_VERSION%)
 
-CMD [ "cmd.exe" ]
-
 ENTRYPOINT [ "node.exe" ]

@@ -51,6 +51,17 @@ RUN `
     nvm install %NODE_VERSION% `
     && (nvm use %NODE_VERSION%)
 
+# Smoke test
+RUN `
+    node --version `
+    && (npm --version)
+
+# Install yarn
+
+RUN `
+    npm install --global yarn `
+    && (yarn --version)
+
 COPY docker-entrypoint.cmd C:/Windows/
 
 ENTRYPOINT [ "docker-entrypoint.cmd" ]

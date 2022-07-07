@@ -51,4 +51,8 @@ RUN `
     nvm install %NODE_VERSION% `
     && (nvm use %NODE_VERSION%)
 
-ENTRYPOINT [ "node.exe" ]
+COPY docker-entrypoint.cmd C:/Windows/
+
+ENTRYPOINT [ "docker-entrypoint.cmd" ]
+
+CMD [ "node" ]

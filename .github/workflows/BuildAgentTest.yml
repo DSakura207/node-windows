@@ -1,0 +1,33 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "gitaction" ]
+
+jobs:
+  build_docker_image:
+    strategy:
+      matrix:
+        os: [ windows-2022, windows-2019]
+        include:
+          - tag: ltsc2022
+            os: windows-2022
+            repo: mcr.microsoft.com/windows/servercore
+          - tag: 4.8-windowsservercore-ltsc2022
+            os: windows-2022
+            repo: mcr.microsoft.com/dotnet/framework/sdk
+          - tag: ltsc2019
+            os: windows-2019
+            repo: mcr.microsoft.com/windows/servercore
+          - tag: 4.8-windowsservercore-ltsc2019
+            os: windows-2019
+            repo: mcr.microsoft.com/dotnet/framework/sdk
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Test environment
+        run: >
+          Write-Host "Expected OS: $Expected_OS, Expected Repo: $Expected_Repo Expected_Tag: $Expected_Tag"
+        env:
+          Expected_OS: ${{ matrix.os }}
+          Expected_Repo: ${{ matrix.repo }}
+          Expected_Tag: ${{ matrix.tag }}

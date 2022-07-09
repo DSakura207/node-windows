@@ -8,7 +8,8 @@ jobs:
   build_docker_image:
     strategy:
       matrix:
-        os: [ windows-2022, windows-2019]
+        os: [ windows-2022, windows-2019 ]
+        repo: [ mcr.microsoft.com/windows/servercore, mcr.microsoft.com/dotnet/framework/sdk ]
         include:
           - tag: ltsc2022
             os: windows-2022
@@ -26,8 +27,4 @@ jobs:
     steps:
       - name: Test environment
         run: >
-          Write-Host "Expected OS: $Expected_OS, Expected Repo: $Expected_Repo Expected_Tag: $Expected_Tag"
-        env:
-          Expected_OS: ${{ matrix.os }}
-          Expected_Repo: ${{ matrix.repo }}
-          Expected_Tag: ${{ matrix.tag }}
+          Write-Host "Expected OS: ${{ matrix.os }}, Expected Repo: ${{ matrix.repo }} Expected_Tag: ${{ matrix.tag }}"

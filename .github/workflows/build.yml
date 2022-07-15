@@ -40,7 +40,7 @@ jobs:
         run: >
           .\Build.ps1
         env:
-          BASE_IMAGE_NAME: matrix.repo
-          BASE_IMAGE_TAG: matrix.tag
-          NODE_VERSION: matrix.node_version
+          BASE_IMAGE_NAME: ${{matrix.repo}}
+          BASE_IMAGE_TAG: ${{matrix.tag}}
+          NODE_VERSION: ${{matrix.node_version}}
       

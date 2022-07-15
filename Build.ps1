@@ -59,12 +59,14 @@ $releaseArray | Foreach-Object -ThrottleLimit 5 -Parallel {
 
 $node_major_ver = $buildList[$env:NODE_VERSION]
 $node_full_ver = $versionTags[$node_major_ver]
+$cmdline = "docker build `
+            --build-arg BASE_IMAGE_NAME=$env:BASE_IMAGE_NAME `
+            --build-arg BASE_IMAGE_TAG=$env:BASE_IMAGE_TAG `
+            --build-arg NODE_VERSION=$node_full_ver `
+            -t node-windows:$env:NODE_VERSION `
+            -t node-windows:$node_major_ver `
+            -t node-windows:$node_full_ver ." 
 
-Write-Host "Build commandline:"
-Write-Host "docker build `
-                    --build-arg BASE_IMAGE_NAME=$env:BASE_IMAGE_NAME `
-                    --build-arg BASE_IMAGE_TAG=$env:BASE_IMAGE_TAG `
-                    --build-arg NODE_VERSION=$node_full_ver `
-                    -t node-windows:$env:NODE_VERSION `
-                    -t node-windows:$node_major_ver `
-                    -t node-windows:$node_full_ver ." 
+Write-Host "Build commandline:$cmdline" 
+
+& $cmdline

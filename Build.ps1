@@ -66,4 +66,4 @@ $arguments = @(
     "."
 )
 
-Start-Process -FilePath docker.exe -ArgumentList $arguments -Wait
+Start-Process -FilePath docker.exe -ArgumentList $arguments -Wait -NoNewWindow

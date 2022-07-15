@@ -35,24 +35,20 @@ foreach ($item in $versionTable.GetEnumerator()) {
         else {
             $lifecycleTag = "current"
         }
-        [void]$buildList.Add($lifecycleTag, $version)
+        [void]$buildList.Add($lifecycleTag, [int]$version)
     }
 }
 
-$releaseArray | Foreach-Object {
-    $bdList = $buildList
-    $vList = $versionTags
-    $pos = $_.version.IndexOf(".")
-    $releaseVer = $_.version.Substring(0, $pos) -replace "[^0-9\.]" , ''
-    $fullreleaseVer = [System.Management.Automation.SemanticVersion]($_.version -replace "[^0-9\.]" , '')
-    if ($bdList.ContainsValue($releaseVer)) {
-        if ($vList.ContainsKey($fullreleaseVer.Major)) {
-            if ($vList[$fullreleaseVer.Major] -lt $fullreleaseVer) {
-                $vList.Add($fullreleaseVer.Major, $fullreleaseVer)
+foreach ($item in $releaseArray) {
+    $fullreleaseVer = [System.Management.Automation.SemanticVersion]::Parse($item.version.Substring(1))
+    if ($buildList.ContainsValue($fullreleaseVer.Major)) {
+        if ($versionTags.ContainsKey($fullreleaseVer.Major)) {
+            if ($versionTags[$fullreleaseVer.Major] -lt $fullreleaseVer) {
+                $versionTags.Add($fullreleaseVer.Major, $fullreleaseVer)
             }
         }
         else {
-            $vList.Add($fullreleaseVer.Major, $fullreleaseVer)
+            $versionTags.Add($fullreleaseVer.Major, $fullreleaseVer)
         }
     }
 }

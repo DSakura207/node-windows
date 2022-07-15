@@ -55,12 +55,15 @@ foreach ($item in $releaseArray) {
 
 $node_major_ver = $buildList[$env:NODE_VERSION]
 $node_full_ver = $versionTags[$node_major_ver]
-$cmdline = "docker build `
-            --build-arg BASE_IMAGE_NAME=$env:BASE_IMAGE_NAME `
-            --build-arg BASE_IMAGE_TAG=$env:BASE_IMAGE_TAG `
-            --build-arg NODE_VERSION=$node_full_ver `
-            -t node-windows:$env:NODE_VERSION-$env:BASE_IMAGE_TAG `
-            -t node-windows:$node_major_ver-$env:BASE_IMAGE_TAG `
-            -t node-windows:$node_full_ver-$env:BASE_IMAGE_TAG ." 
+$arguments = @(
+    "build"
+    "--build-arg BASE_IMAGE_NAME=$env:BASE_IMAGE_NAME"
+    "--build-arg BASE_IMAGE_TAG=$env:BASE_IMAGE_TAG"
+    "--build-arg NODE_VERSION=$node_full_ver"
+    "-t node-windows:$env:NODE_VERSION-$env:BASE_IMAGE_TAG"
+    "-t node-windows:$node_major_ver-$env:BASE_IMAGE_TAG"
+    "-t node-windows:$node_full_ver-$env:BASE_IMAGE_TAG"
+    "."
+)
 
-& $cmdline
+Start-Process -FilePath docker.exe -ArgumentList $arguments -Wait

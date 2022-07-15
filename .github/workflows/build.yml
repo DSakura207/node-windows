@@ -26,6 +26,7 @@ jobs:
             repo: mcr.microsoft.com/dotnet/framework/sdk
     runs-on: ${{ matrix.os }}
     steps:
+      - uses: actions/checkout@v3
       - name: State build target
         run: >
           Write-Host "Build node-windows, base image ${{ matrix.repo }}:${{ matrix.tag }}, node.js: ${{ matrix.node_version }}"

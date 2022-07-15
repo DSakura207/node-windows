@@ -39,9 +39,9 @@ foreach ($item in $versionTable.GetEnumerator()) {
     }
 }
 
-$releaseArray | Foreach-Object -ThrottleLimit 5 -Parallel {
-    $bdList = $using:buildList
-    $vList = $using:versionTags
+$releaseArray | Foreach-Object {
+    $bdList = $buildList
+    $vList = $versionTags
     $pos = $_.version.IndexOf(".")
     $releaseVer = $_.version.Substring(0, $pos) -replace "[^0-9\.]" , ''
     $fullreleaseVer = [System.Management.Automation.SemanticVersion]($_.version -replace "[^0-9\.]" , '')
@@ -69,4 +69,4 @@ $cmdline = "docker build `
 
 Write-Host "Build commandline:$cmdline" 
 
-& $cmdline
+#& $cmdline

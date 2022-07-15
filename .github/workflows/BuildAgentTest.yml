@@ -26,6 +26,7 @@ jobs:
             repo: mcr.microsoft.com/dotnet/framework/sdk
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Test environment
+      - name: State build target
         run: >
-          Write-Host "Expected OS: ${{ matrix.os }}, Expected Repo: ${{ matrix.repo }} Expected_Tag: ${{ matrix.tag }}, Build ${{ matrix.node_version }}"
+          Write-Host "Build node-windows, base image ${{ matrix.repo }}:${{ matrix.tag }}, node.js: ${{ matrix.node_version }}"
+      

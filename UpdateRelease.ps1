@@ -1,16 +1,7 @@
-# Impersonate as an automated updater
-$nameArgs = @(
-    "config",
-    "user.name",
-    "AutoUpdater"
-)
-$emailArgs = @(
-    "config",
-    "user.email",
-    "<>"
-)
-Start-Process -FilePath git -ArgumentList $nameArgs -NoNewWindow -Wait
-Start-Process -FilePath git -ArgumentList $emailArgs -NoNewWindow -Wait
+# Impersonate as an automated updater, configure autocrlf
+Start-Process -FilePath "git" -ArgumentList "config", "user.name", "AutoUpdater" -NoNewWindow -Wait
+Start-Process -FilePath "git" -ArgumentList "config", "user.email", "<>" -NoNewWindow -Wait
+Start-Process -FilePath "git" -ArgumentList "config", "core.autocrlf", "true" -NoNewWindow -Wait
 
 # Remove old release schedule and version list, download new ones.
 Remove-Item ./schedule.json -Force

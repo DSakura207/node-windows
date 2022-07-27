@@ -50,12 +50,6 @@ jobs:
       - name: State build target
         run: >
           Write-Host "Build node-windows, base image ${{ matrix.repo }}:${{ matrix.tag }}, node.js: ${{ matrix.node_version }}"
-      - name: Get Node.js release schedule
-        run: >
-          Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/nodejs/Release/main/schedule.json' -UseBasicParsing -OutFile schedule.json
-      - name: Get Node.js release list
-        run: >
-          Invoke-WebRequest -Uri 'https://nodejs.org/download/release/index.json' -UseBasicParsing -OutFile index.json
       - name: Build and tag Docker images
         run: >
           .\Build.ps1

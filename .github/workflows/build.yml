@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Update Node.js release schedule and version list
-        shell: powershell
+        shell: pwsh
         env:
           NODE_RELEASE_SCHEDULE: https://raw.githubusercontent.com/nodejs/Release/main/schedule.json
           NODE_RELEASE_VERSION: https://nodejs.org/download/release/index.json

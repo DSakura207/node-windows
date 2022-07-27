@@ -9,8 +9,8 @@ $emailArgs = @(
     "user.email",
     "<>"
 )
-Start-Process -FilePath git -ArgumentList $nameArgs
-Start-Process -FilePath git -ArgumentList $emailArgs
+Start-Process -FilePath git -ArgumentList $nameArgs -NoNewWindow -Wait
+Start-Process -FilePath git -ArgumentList $emailArgs -NoNewWindow -Wait
 
 # Remove old release schedule and version list, download new ones.
 Remove-Item ./schedule.json -Force
@@ -24,9 +24,9 @@ $gitStatus = (git status --porcelain=v1)
 
 # Update file and emit output for next job.
 if ($gitStatus) {
-    & "git add ."
-    & "git commit -m `"Update release files`""
-    & "git push"
+    Start-Process -FilePath "git" -ArgumentList "add", "." -NoNewWindow -Wait
+    Start-Process -FilePath "git" -ArgumentList "commit", "-m", "Update release files" -NoNewWindow -Wait
+    Start-Process -FilePath "git" -ArgumentList "push" -NoNewWindow -Wait
     Write-Host "::set-output name=update_required::true"
 }
 else {

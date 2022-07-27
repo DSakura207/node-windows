@@ -5,7 +5,44 @@ on:
     branches: [ "gitaction" ]
 
 jobs:
-  build_docker_image:
+  update_nodejs_releases:
+    name: Update Node.js releases
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Update Node.js release schedule and version list
+        shell: powershell
+        env:
+          NODE_RELEASE_SCHEDULE: https://raw.githubusercontent.com/nodejs/Release/main/schedule.json
+          NODE_RELEASE_VERSION: https://nodejs.org/download/release/index.json
+        run: >
+          $proceedNextJob = $false
+          Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/nodejs/Release/main/schedule.json' -UseBasicParsing -OutFile ./schedule.new.json
+          Invoke-WebRequest -Uri 'https://nodejs.org/download/release/index.json' -UseBasicParsing -OutFile ./index.new.json
+          $oldScheduleHash = (Get-FileHash -Path ./schedule.json -Algorithm SHA256).Hash
+          $newScheduleHash = (Get-FileHash -Path ./schedule.new.json -Algorithm SHA256).Hash
+          $oldReleaseHash = (Get-FileHash -Path ./index.json -Algorithm SHA256).Hash
+          $newReleaseHash = (Get-FileHash -Path ./index.new.json -Algorithm SHA256).Hash
+          if ($oldScheduleHash -ne $newScheduleHash)
+          {
+            Remove-Item ./schedule.json -Force
+            Rename-Item ./schedule.new.json schedule.json
+            $proceedNextJob = $true
+          }
+          if ($oldReleaseHash -ne $newReleaseHash)
+          {
+            Remove-Item ./index.json -Force
+            Rename-Item ./index.new.json index.json
+            $proceedNextJob = $true
+          }
+          if ($proceedNextJob) {
+            Exit 0
+          } else {
+            Exit 1
+          }
+  build_and_publish_docker_image:
+    needs: update_nodejs_releases
+    name: Build and publish node-windows image
     strategy:
       matrix:
         os: [ windows-2022, windows-2019 ]

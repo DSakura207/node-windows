@@ -28,9 +28,9 @@ jobs:
     needs: update_release
     steps:
       - run: echo "Update is necessary."
-        if: ${{ needs.update_release.outputs.update_required == true }}
+        if: ${{ needs.update_release.outputs.update_required == 'true' }}
       - run: echo "Update is not needed."
-        if: ${{ needs.update_release.outputs.update_required == false }}
+        if: ${{ needs.update_release.outputs.update_required == 'false' }}
   build_and_publish:
     needs: update_release
     if: ${{ needs.update_release.outputs.update_required == true }}

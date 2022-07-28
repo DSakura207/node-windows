@@ -47,6 +47,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
+      - name: Determine docker hub repo name
+        id: setup_variables
+        run: >
+          "${{ github.ref_name }}" -eq "master" ? (Write-Host "::set-output name=repo_name::${{ secrets.DOCKER_HUB_PUBLIC_REPO }}") : (Write-Host "::set-output name=repo_name::${{ secrets.DOCKER_HUB_PRIVATE_REPO }}")
       - name: State build target
         run: >
           Write-Host "Build node-windows, base image ${{ matrix.repo }}:${{ matrix.tag }}, node.js: ${{ matrix.node_version }}"
@@ -57,5 +61,5 @@ jobs:
           BASE_IMAGE_NAME: ${{matrix.repo}}
           BASE_IMAGE_TAG: ${{matrix.tag}}
           NODE_VERSION: ${{matrix.node_version}}
-          DOCKER_HUB_REPO: ${{ needs.determine_variables.outputs.repo_name }}
+          DOCKER_HUB_REPO: ${{ steps.setup_variables.outputs.repo_name }}
       

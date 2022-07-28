@@ -47,7 +47,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      - name: Determine docker hub repo name
+      - name: Setup variables
         id: setup_variables
         run: >
           "${{ github.ref_name }}" -eq "master" ? (Write-Host "::set-output name=repo_name::${{ secrets.DOCKER_HUB_PUBLIC_REPO }}") : (Write-Host "::set-output name=repo_name::${{ secrets.DOCKER_HUB_PRIVATE_REPO }}")

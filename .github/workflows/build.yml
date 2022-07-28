@@ -5,17 +5,6 @@ on:
     branches: [ "gitaction" ]
 
 jobs:
-  determine_variables:
-    name: Determine variables by branch name
-    runs-on: ubuntu-latest
-    outputs:
-      repo_name: ${{ steps.docker_hub_repo.outputs.repo_name }}
-    steps:
-      - name: Set docker hub repo name by branch name
-        id: docker_hub_repo
-        shell: pwsh
-        run: >
-          "${{ github.ref_name }}" -eq "master" ? (Write-Host "::set-output name=repo_name::${{ secrets.DOCKER_HUB_PUBLIC_REPO }}") : (Write-Host "::set-output name=repo_name::${{ secrets.DOCKER_HUB_PRIVATE_REPO }}")
   update_release:
     name: Update Node.js releases
     runs-on: ubuntu-latest
@@ -34,7 +23,7 @@ jobs:
         run: >
           ./UpdateRelease.ps1
   build_and_publish:
-    needs: [determine_variables, update_release]
+    needs: update_release
     if: ${{ needs.update_release.outputs.update_required == 'true' }}
     name: Build and publish node-windows image
     strategy:

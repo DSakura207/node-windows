@@ -13,6 +13,7 @@ jobs:
     steps:
       - name: Set docker hub repo name by branch name
         id: docker_hub_repo
+        shell: pwsh
         run: >
           ${{ github.ref_name }} -eq "master" ? (Write-Host "::set-output name=repo_name::${{ secrets.DOCKER_HUB_PUBLIC_REPO }}") : (Write-Host "::set-output name=repo_name::${{ secrets.DOCKER_HUB_PRIVATE_REPO }}")
   update_release:

@@ -66,7 +66,8 @@ $arguments = @(
     "."
 )
 
-Start-Process -FilePath docker.exe -ArgumentList $arguments -Wait -NoNewWindow -ErrorAction Stop
+$buildProc = Start-Process -FilePath docker.exe -ArgumentList $arguments -Wait -NoNewWindow -ErrorAction Stop -PassThru
+Write-Host $buildProc.CommandLine
 
 Write-Host "Publish to Docker Hub ..."
 
@@ -87,4 +88,5 @@ $pushArgs = @(
     "$env:DOCKER_HUB_USERNAME/$env:REPO_NAME"
 )
 
-Start-Process -FilePath docker.exe -ArgumentList $pushArgs -Wait -NoNewWindow -ErrorAction Stop
+$pushProc = Start-Process -FilePath docker.exe -ArgumentList $pushArgs -Wait -NoNewWindow -ErrorAction Stop -PassThru
+Write-Host $pushProc.CommandLine

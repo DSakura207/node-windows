@@ -66,8 +66,6 @@ $buildArg = @(
     "."
 )
 
-Write-Output $buildArg
-
 Start-Process -FilePath docker.exe -ArgumentList $buildArg -Wait -NoNewWindow -ErrorAction Stop
 
 Write-Host "Publish to Docker Hub ..."

@@ -84,7 +84,7 @@ $pushArgs = @(
     "image"
     "push"
     "--all-tags"
-    "$env:DOCKER_HUB_USERNAME/$env:DOCKER_HUB_REPO"
+    "$env:DOCKER_HUB_USERNAME/$env:REPO_NAME"
 )
 
 Start-Process -FilePath docker.exe -ArgumentList $pushArgs -Wait -NoNewWindow -ErrorAction Stop

@@ -53,10 +53,9 @@ jobs:
       BASE_IMAGE_NAME: ${{matrix.repo}}
       BASE_IMAGE_TAG: ${{matrix.tag}}
       NODE_VERSION: ${{matrix.node_version}}
-      LOCAL_REPO_NAME: 'node-windows-local'
+      REPO_NAME: 'node-windows-priv'
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
       DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-      DOCKER_HUB_REPO: 'node-windows-priv'
     steps:
       - uses: actions/checkout@v3
       - name: State build target

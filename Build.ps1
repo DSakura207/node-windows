@@ -67,3 +67,23 @@ $arguments = @(
 )
 
 Start-Process -FilePath docker.exe -ArgumentList $arguments -Wait -NoNewWindow -ErrorAction Stop
+
+Write-Host "Publish to Docker Hub ..."
+
+$loginArgs = @(
+    "--username"
+    $env:DOCKER_HUB_USERNAME
+    "--password"
+    $env:DOCKER_HUB_PASSWORD
+)
+
+Start-Process -FilePath docker.exe -ArgumentList $loginArgs -Wait -NoNewWindow -ErrorAction Stop
+
+$pushArgs = @(
+    "image"
+    "push"
+    "--all-tags"
+    "$env:DOCKER_HUB_USERNAME/$env:DOCKER_HUB_REPO"
+)
+
+Start-Process -FilePath docker.exe -ArgumentList $pushArgs -Wait -NoNewWindow -ErrorAction Stop

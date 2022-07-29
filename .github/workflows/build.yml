@@ -28,7 +28,7 @@ jobs:
           ./UpdateRelease.ps1
   build_and_publish:
     needs: update_release
-    if: ${{ needs.update_release.outputs.update_required == 'true' }}
+    #if: ${{ needs.update_release.outputs.update_required == 'true' }}
     name: Build and publish node-windows image
     strategy:
       matrix:

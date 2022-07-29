@@ -60,9 +60,9 @@ $arguments = @(
     "--build-arg BASE_IMAGE_NAME=$env:BASE_IMAGE_NAME"
     "--build-arg BASE_IMAGE_TAG=$env:BASE_IMAGE_TAG"
     "--build-arg NODE_VERSION=$node_full_ver"
-    "-t node-windows:$env:NODE_VERSION-$env:BASE_IMAGE_TAG"
-    "-t node-windows:$node_major_ver-$env:BASE_IMAGE_TAG"
-    "-t node-windows:$node_full_ver-$env:BASE_IMAGE_TAG"
+    "-t $env:LOCAL_REPO_NAME:$env:NODE_VERSION-$env:BASE_IMAGE_TAG"
+    "-t $env:LOCAL_REPO_NAME:$node_major_ver-$env:BASE_IMAGE_TAG"
+    "-t $env:LOCAL_REPO_NAME:$node_full_ver-$env:BASE_IMAGE_TAG"
     "."
 )
 

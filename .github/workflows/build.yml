@@ -64,5 +64,5 @@ jobs:
           Write-Host "Base image ${{ matrix.repo }}:${{ matrix.tag }}, node.js: ${{ matrix.node_version }}"
       - name: Build and tag Docker images
         run: >
-          .\Build.ps1
+          .\BuildAndPublish.ps1
       

@@ -18,8 +18,11 @@ if ($gitStatus) {
     Start-Process -FilePath "git" -ArgumentList "add", "." -NoNewWindow -Wait
     Start-Process -FilePath "git" -ArgumentList "commit", "-m", "`"Update release files`"" -NoNewWindow -Wait
     Start-Process -FilePath "git" -ArgumentList "push" -NoNewWindow -Wait
+    Write-Host "New changes checked in:"
+    Write-Host $gitStatus
     Write-Host "::set-output name=rc::true"
 }
 else {
+    Write-Host "No new release detected."
     Write-Host "::set-output name=rc::false"
 }

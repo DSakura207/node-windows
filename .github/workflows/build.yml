@@ -1,10 +1,12 @@
 name: Docker Image CI/CD
 
 on:
+  push:
+    branches:
   # Uncomment when merged to master
-  # push:
-  #   branches: [ "master" ]
-  workflow_dispatch
+  #   - 'master'
+      - 'gitaction'
+    
 
 jobs:
   update_release:

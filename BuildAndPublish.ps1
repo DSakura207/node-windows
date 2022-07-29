@@ -71,6 +71,7 @@ Start-Process -FilePath docker.exe -ArgumentList $arguments -Wait -NoNewWindow -
 Write-Host "Publish to Docker Hub ..."
 
 $loginArgs = @(
+    "login"
     "--username"
     $env:DOCKER_HUB_USERNAME
     "--password"

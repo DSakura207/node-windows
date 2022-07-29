@@ -31,6 +31,7 @@ jobs:
     #if: ${{ needs.update_release.outputs.update_required == 'true' }}
     name: Build and publish node-windows image
     strategy:
+      max-parallel: 3
       matrix:
         os: [ windows-2022, windows-2019 ]
         repo: [ mcr.microsoft.com/windows/servercore, mcr.microsoft.com/dotnet/framework/sdk ]

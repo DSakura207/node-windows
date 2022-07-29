@@ -49,6 +49,10 @@ jobs:
             os: windows-2019
             repo: mcr.microsoft.com/dotnet/framework/sdk
     runs-on: ${{ matrix.os }}
+    env:
+      BASE_IMAGE_NAME: ${{matrix.repo}}
+      BASE_IMAGE_TAG: ${{matrix.tag}}
+      NODE_VERSION: ${{matrix.node_version}}
     steps:
       - uses: actions/checkout@v3
       - name: State build target
@@ -57,9 +61,4 @@ jobs:
       - name: Build and tag Docker images
         run: >
           .\Build.ps1
-        env:
-          BASE_IMAGE_NAME: ${{matrix.repo}}
-          BASE_IMAGE_TAG: ${{matrix.tag}}
-          NODE_VERSION: ${{matrix.node_version}}
-          DOCKER_HUB_REPO: ${{ steps.setup_variables.outputs.repo_name }}
       

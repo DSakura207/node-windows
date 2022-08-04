@@ -6,6 +6,8 @@ on:
   # Uncomment when merged to master
   #   - 'master'
       - 'gitaction'
+  schedule:
+    - cron: '15 3 * * 6'
     
 
 jobs:

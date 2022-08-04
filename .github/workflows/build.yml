@@ -61,9 +61,6 @@ jobs:
       DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
     steps:
       - uses: actions/checkout@v3
-      - name: State build target
-        run: >
-          Write-Host "Base image ${{ matrix.repo }}:${{ matrix.tag }}, node.js: ${{ matrix.node_version }}"
       - name: Build and tag Docker images
         run: >
           .\BuildAndPublish.ps1

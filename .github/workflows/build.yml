@@ -3,9 +3,7 @@ name: Docker Image CI/CD
 on:
   push:
     branches:
-  # Uncomment when merged to master
-  #   - 'master'
-      - 'gitaction'
+      - 'master'
   schedule:
     - cron: '15 3 * * 6'
     

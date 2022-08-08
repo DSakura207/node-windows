@@ -1,0 +1,65 @@
+name: Docker Image CI/CD
+
+on:
+  push:
+    branches:
+      - 'master'
+  schedule:
+    - cron: '15 3 * * 6'
+    
+
+jobs:
+  update_release:
+    name: Update Node.js releases
+    runs-on: ubuntu-latest
+    outputs:
+      update_required: ${{ steps.update_release.outputs.rc }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Show git version
+        run: git version
+      - name: Update Node.js release schedule and version list
+        id: update_release
+        shell: pwsh
+        env:
+          NODE_RELEASE_SCHEDULE: https://raw.githubusercontent.com/nodejs/Release/main/schedule.json
+          NODE_RELEASE_VERSION: https://nodejs.org/download/release/index.json
+        run: >
+          ./UpdateRelease.ps1
+  build_and_publish:
+    needs: update_release
+    if: ${{ needs.update_release.outputs.update_required == 'true' }}
+    name: Build and publish node-windows image
+    strategy:
+      max-parallel: 3
+      matrix:
+        os: [ windows-2022, windows-2019 ]
+        repo: [ mcr.microsoft.com/windows/servercore, mcr.microsoft.com/dotnet/framework/sdk ]
+        node_version: [ current, lts, maintenance]
+        include:
+          - tag: ltsc2022
+            os: windows-2022
+            repo: mcr.microsoft.com/windows/servercore
+          - tag: 4.8-windowsservercore-ltsc2022
+            os: windows-2022
+            repo: mcr.microsoft.com/dotnet/framework/sdk
+          - tag: ltsc2019
+            os: windows-2019
+            repo: mcr.microsoft.com/windows/servercore
+          - tag: 4.8-windowsservercore-ltsc2019
+            os: windows-2019
+            repo: mcr.microsoft.com/dotnet/framework/sdk
+    runs-on: ${{ matrix.os }}
+    env:
+      BASE_IMAGE_NAME: ${{matrix.repo}}
+      BASE_IMAGE_TAG: ${{matrix.tag}}
+      NODE_VERSION: ${{matrix.node_version}}
+      REPO_NAME: 'node-windows-priv'
+      DOCKER_HUB_USERNAME: 'dsakura207'
+      DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and tag Docker images
+        run: >
+          .\BuildAndPublish.ps1
+      

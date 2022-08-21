@@ -6,7 +6,14 @@ on:
       - 'master'
   schedule:
     - cron: '15 3 * * *'
-    
+  workflow_dispatch:
+    inputs:
+      force_build:
+        description: Force build job to run
+        type: boolean
+        default: false
+        required: false
+
 env:
   REPO_NAME: 'node-windows-priv'
   DOCKER_HUB_USERNAME: 'dsakura207'
@@ -31,7 +38,7 @@ jobs:
           ./UpdateRelease.ps1
   build_and_publish:
     needs: update_release
-    if: ${{ needs.update_release.outputs.update_required == 'true' }}
+    if: ${{ needs.update_release.outputs.update_required == 'true' || inputs.force_build }}
     name: Build and publish node-windows image
     strategy:
       max-parallel: 3

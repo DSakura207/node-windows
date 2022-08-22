@@ -79,12 +79,3 @@ $loginArgs = @(
 )
 
 Start-Process -FilePath docker.exe -ArgumentList $loginArgs -Wait -NoNewWindow -ErrorAction Stop
-
-$pushArgs = @(
-    "image"
-    "push"
-    "--all-tags"
-    "$env:DOCKER_HUB_USERNAME/$env:REPO_NAME"
-)
-
-Start-Process -FilePath docker.exe -ArgumentList $pushArgs -Wait -NoNewWindow -ErrorAction Stop

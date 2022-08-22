@@ -77,7 +77,7 @@ jobs:
           ref: ${{ github.ref }}
       - name: Build and tag Docker images
         run: >
-          .\BuildAndPublish.ps1
+          .\Build.ps1
       - name: Publish image tags to Docker Hub
         if: ${{ inputs.publish_image }}
         run: >

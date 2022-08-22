@@ -39,7 +39,7 @@ jobs:
         env:
           NODE_RELEASE_SCHEDULE: https://raw.githubusercontent.com/nodejs/Release/main/schedule.json
           NODE_RELEASE_VERSION: https://nodejs.org/download/release/index.json
-        run: >
+        run: |
           ./UpdateRelease.ps1
   build_and_publish:
     needs: update_release
@@ -80,10 +80,10 @@ jobs:
           username: env.DOCKER_HUB_USERNAME
           password: secrets.DOCKER_HUB_PASSWORD
       - name: Build and tag Docker images
-        run: >
+        run: |
           .\Build.ps1
       - name: Publish image tags to Docker Hub
         if: ${{ inputs.publish_image }}
-        run: >
+        run: |
           docker.exe image push --all-tags $env:DOCKER_HUB_USERNAME/$env:REPO_NAME
       

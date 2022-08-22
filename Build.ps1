@@ -67,15 +67,3 @@ $buildArg = @(
 )
 
 Start-Process -FilePath docker.exe -ArgumentList $buildArg -Wait -NoNewWindow -ErrorAction Stop
-
-Write-Host "Publish to Docker Hub ..."
-
-$loginArgs = @(
-    "login"
-    "--username"
-    $env:DOCKER_HUB_USERNAME
-    "--password"
-    $env:DOCKER_HUB_PASSWORD
-)
-
-Start-Process -FilePath docker.exe -ArgumentList $loginArgs -Wait -NoNewWindow -ErrorAction Stop

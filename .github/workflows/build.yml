@@ -31,8 +31,6 @@ jobs:
       update_required: ${{ steps.update_release.outputs.rc }}
     steps:
       - uses: actions/checkout@v3
-      - name: Show git version
-        run: git version
       - name: Update Node.js release schedule and version list
         id: update_release
         shell: pwsh

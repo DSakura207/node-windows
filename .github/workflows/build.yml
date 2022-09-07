@@ -20,7 +20,7 @@ on:
         required: false
 
 env:
-  REPO_NAME: 'node-windows-priv'
+  REPO_NAME: 'node-windows'
   DOCKER_HUB_USERNAME: 'dsakura207'
 
 jobs:

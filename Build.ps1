@@ -89,6 +89,10 @@ if ($node_major_ver) {
     )
 
     Start-Process -FilePath docker.exe -ArgumentList $buildArg -Wait -NoNewWindow -ErrorAction Stop
-}
 
+    Write-Host "DO_PUBLISH}=true" >> $GITHUB_ENV
+}
+else {
+    Write-Host "DO_PUBLISH}=false" >> $GITHUB_ENV
+}
 

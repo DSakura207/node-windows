@@ -18,11 +18,11 @@ if ($gitStatus) {
     Start-Process -FilePath "git" -ArgumentList "add", "." -NoNewWindow -Wait
     Start-Process -FilePath "git" -ArgumentList "commit", "-m", "`"Update release files`"" -NoNewWindow -Wait
     Start-Process -FilePath "git" -ArgumentList "push" -NoNewWindow -Wait
-    Write-Host "New changes checked in:"
-    Write-Host $gitStatus
+    Write-Information "New changes checked in:"
+    Write-Information $gitStatus
     Add-Content -Value "DO_BUILD=true" -Path $env:GITHUB_OUTPUT
 }
 else {
-    Write-Host "No new release detected."
+    Write-Information "No new release detected."
     Add-Content -Value "DO_BUILD=false" -Path $env:GITHUB_OUTPUT
 }

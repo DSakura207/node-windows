@@ -26,10 +26,10 @@ foreach ($item in $versionTable.GetEnumerator()) {
             $ltsDate = [datetime]::ParseExact($item.Value.lts, 'yyyy-MM-dd', $null)
             $isLts = $ltsDate -le $today
             if ($isLts) {
-                Write-Information "This version IS lts since $ltsDate"
+                Write-Information "✔️LTS since $ltsDate"
             }
             else {
-                Write-Information "This version is NOT lts before $ltsDate"
+                Write-Information "❌LTS before $ltsDate"
             }
         }
 
@@ -37,10 +37,10 @@ foreach ($item in $versionTable.GetEnumerator()) {
             $maintenanceDate = [datetime]::ParseExact($item.Value.maintenance, 'yyyy-MM-dd', $null)
             $isMaintenance = $maintenanceDate -le $today
             if ($isLts) {
-                Write-Information "This version IS maintenance since $maintenanceDate"
+                Write-Information "✔️Maintenance since $maintenanceDate"
             }
             else {
-                Write-Information "This version is NOT maintenance before $maintenanceDate"
+                Write-Information "❌Maintenance before $maintenanceDate"
             }
         }
 
@@ -56,6 +56,7 @@ foreach ($item in $versionTable.GetEnumerator()) {
             $lifecycleTag = "current"
             Write-Information "Release is current"
         }
+
         if ($buildList.ContainsKey($lifecycleTag)) {
             [int]$curTagVersion = $buildList[$lifecycleTag]
             if ($curTagVersion -le [int]$version) {
@@ -65,7 +66,14 @@ foreach ($item in $versionTable.GetEnumerator()) {
         else {
             [void]$buildList.Add($lifecycleTag, [int]$version)
         }
+        Write-Information "Current $lifecycleTag is $($buildList[$lifecycleTag])"
     }
+}
+
+Write-Information "Tag and version hashtable"
+foreach ($tag in $buildList.Keys) {
+    $ver = $buildList[$tag]
+    Write-Information "$tag➡️$ver"
 }
 
 foreach ($item in $releaseArray) {
@@ -89,10 +97,10 @@ $node_major_ver = $buildList[$env:NODE_VERSION]
 if ($node_major_ver) {
     $node_full_ver = $versionTags[$node_major_ver]
 
-    Write-Information "===Build target==="
-    Write-Information "Version tag: $env:NODE_VERSION"
-    Write-Information "Major version: $node_major_ver"
-    Write-Information "Full version: $node_full_ver"
+    Write-Information "Build INFO"
+    Write-Information "Tag➡️$env:NODE_VERSION"
+    Write-Information "Major➡️$node_major_ver"
+    Write-Information "Full➡️$node_full_ver"
 
     $buildArg = @(
         "build"

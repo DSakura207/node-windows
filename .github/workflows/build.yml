@@ -41,7 +41,7 @@ jobs:
           ./UpdateRelease.ps1
   build_and_publish:
     needs: update_release
-    if: ${{ needs.update_release.outputs.DO_BUILD || inputs.force_build }}
+    if: $needs.update_release.outputs.DO_BUILD || inputs.force_build
     name: Build and publish node-windows image
     strategy:
       max-parallel: 3
@@ -84,7 +84,7 @@ jobs:
           .\Build.ps1
       - name: Publish image tags to Docker Hub
         id: publish_image
-        if: ${{ steps.build_image.outputs.DO_PUBLISH }}
+        if: steps.build_image.outputs.DO_PUBLISH
         run: |
           docker.exe image push --all-tags $env:DOCKER_HUB_USERNAME/$env:REPO_NAME
       

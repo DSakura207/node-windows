@@ -11,19 +11,20 @@ if ($false -eq (Test-Path .\index.json)) {
 }
 
 $today = Get-Date
-$versionTable = ( Get-Content .\schedule.json | ConvertFrom-Json -AsHashtable)
+$versionTable = ( Get-Content .\schedule.json | ConvertFrom-Json -AsHashtable )
 $releaseArray = ( Get-Content .\index.json | ConvertFrom-Json )
 $buildList = @{}
 $versionTags = @{}
 
-foreach ($item in $versionTable.GetEnumerator()) {
-    $startDate = [datetime]::ParseExact($item.Value.start, 'yyyy-MM-dd', $null)
-    $endDate = [datetime]::ParseExact($item.Value.end, 'yyyy-MM-dd', $null)
-    $version = $item.Key -replace "[^0-9\.]" , ''
-    Write-Information "Determine release status for $version"
+foreach ($key in $versionTable.Keys) {
+    $item = $versionTable[$key]
+    $startDate = [datetime]::ParseExact($item.start, 'yyyy-MM-dd', $null)
+    $endDate = [datetime]::ParseExact($item.end, 'yyyy-MM-dd', $null)
+    $version = $key -replace "[^0-9\.]" , ''
+    Write-Information "Determine release status for $key"
     if (($startDate -le $today) -and ($endDate -ge $today)) {
-        if ($item.Value.lts) {
-            $ltsDate = [datetime]::ParseExact($item.Value.lts, 'yyyy-MM-dd', $null)
+        if ($item.lts) {
+            $ltsDate = [datetime]::ParseExact($item.lts, 'yyyy-MM-dd', $null)
             $isLts = $ltsDate -le $today
             if ($isLts) {
                 Write-Information "✔️LTS since $ltsDate"
@@ -33,8 +34,8 @@ foreach ($item in $versionTable.GetEnumerator()) {
             }
         }
 
-        if ($item.Value.maintenance) {
-            $maintenanceDate = [datetime]::ParseExact($item.Value.maintenance, 'yyyy-MM-dd', $null)
+        if ($item.maintenance) {
+            $maintenanceDate = [datetime]::ParseExact($item.maintenance, 'yyyy-MM-dd', $null)
             $isMaintenance = $maintenanceDate -le $today
             if ($isLts) {
                 Write-Information "✔️Maintenance since $maintenanceDate"

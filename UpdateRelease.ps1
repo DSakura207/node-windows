@@ -1,3 +1,4 @@
+$InformationPreference = 'Continue'
 # Impersonate as an automated updater, configure autocrlf
 Start-Process -FilePath "git" -ArgumentList "config", "user.name", "AutoUpdater" -NoNewWindow -Wait
 Start-Process -FilePath "git" -ArgumentList "config", "user.email", "<>" -NoNewWindow -Wait

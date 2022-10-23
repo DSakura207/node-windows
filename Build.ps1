@@ -1,3 +1,4 @@
+$InformationPreference = 'Continue'
 if ($false -eq (Test-Path .\schedule.json)) {
     Write-Error -Message "Unable to locate release schedule!" -ErrorAction Stop
 }

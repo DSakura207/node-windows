@@ -1,6 +1,10 @@
 $InformationPreference = 'Continue'
 
-Write-Information $PSVersionTable
+Write-Information "Script Runner"
+Write-Information "PowerShell➡️$($PSVersionTable.PSVersion)"
+Write-Information "Edition➡️$($PSVersionTable.PSEdition)"
+Write-Information "OS➡️$($PSVersionTable.OS)"
+Write-Information "Platform➡️$($PSVersionTable.Platform)"
 
 if ($false -eq (Test-Path .\schedule.json)) {
     Write-Error -Message "Unable to locate release schedule!" -ErrorAction Stop
@@ -22,6 +26,10 @@ foreach ($key in $versionTable.Keys) {
     $endDate = [datetime]::ParseExact($item.end, 'yyyy-MM-dd', $null)
     $version = $key -replace "[^0-9\.]" , ''
     Write-Information "Determine release status for $key"
+
+    $isLts = $false
+    $isMaintenance = $false
+    
     if (($startDate -le $today) -and ($endDate -ge $today)) {
         if ($item.lts) {
             $ltsDate = [datetime]::ParseExact($item.lts, 'yyyy-MM-dd', $null)

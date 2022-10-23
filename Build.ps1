@@ -1,4 +1,7 @@
 $InformationPreference = 'Continue'
+
+Write-Information $PSVersionTable
+
 if ($false -eq (Test-Path .\schedule.json)) {
     Write-Error -Message "Unable to locate release schedule!" -ErrorAction Stop
 }
@@ -22,10 +25,23 @@ foreach ($item in $versionTable.GetEnumerator()) {
         if ($item.Value.lts) {
             $ltsDate = [datetime]::ParseExact($item.Value.lts, 'yyyy-MM-dd', $null)
             $isLts = $ltsDate -le $today
+            if ($isLts) {
+                Write-Information "This version IS lts since $ltsDate"
+            }
+            else {
+                Write-Information "This version is NOT lts before $ltsDate"
+            }
         }
+
         if ($item.Value.maintenance) {
             $maintenanceDate = [datetime]::ParseExact($item.Value.maintenance, 'yyyy-MM-dd', $null)
             $isMaintenance = $maintenanceDate -le $today
+            if ($isLts) {
+                Write-Information "This version IS maintenance since $maintenanceDate"
+            }
+            else {
+                Write-Information "This version is NOT maintenance before $maintenanceDate"
+            }
         }
 
         if ($isMaintenance) {
@@ -89,11 +105,11 @@ if ($node_major_ver) {
         "."
     )
 
-    Start-Process -FilePath docker.exe -ArgumentList $buildArg -Wait -NoNewWindow -ErrorAction Stop
+#    Start-Process -FilePath docker.exe -ArgumentList $buildArg -Wait -NoNewWindow -ErrorAction Stop
 
-    Add-Content -Value "DO_PUBLISH=true" -Path $env:GITHUB_OUTPUT
+#    Add-Content -Value "DO_PUBLISH=true" -Path $env:GITHUB_OUTPUT
 }
 else {
-    Add-Content -Value "DO_PUBLISH=false" -Path $env:GITHUB_OUTPUT
+#    Add-Content -Value "DO_PUBLISH=false" -Path $env:GITHUB_OUTPUT
 }
 

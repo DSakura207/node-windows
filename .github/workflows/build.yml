@@ -27,6 +27,8 @@ jobs:
   update_release:
     name: Update Node.js releases
     runs-on: ubuntu-latest
+    outputs:
+      DO_BUILD: ${{ steps.update_release.outputs.DO_BUILD }}
     steps:
       - uses: actions/checkout@v3
       - name: Update Node.js release schedule and version list
@@ -39,7 +41,7 @@ jobs:
           ./UpdateRelease.ps1
   build_and_publish:
     needs: update_release
-    if: ${{ env.DO_BUILD || inputs.force_build }}
+    if: ${{ steps.update_release.outputs.DO_BUILD || inputs.force_build }}
     name: Build and publish node-windows image
     strategy:
       max-parallel: 3
@@ -68,6 +70,7 @@ jobs:
     steps:
       # ref is necessary to pull down latest commit, not the commit triggered workflow.
       - uses: actions/checkout@v3
+        id: checkout_repo
         with:
           ref: ${{ github.ref }}
       - name: Login to Docker Hub
@@ -76,10 +79,12 @@ jobs:
           username: ${{ env.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Build and tag Docker images
+        id: build_image
         run: |
           .\Build.ps1
       - name: Publish image tags to Docker Hub
-        if: ${{ env.DO_PUBLISH }}
+        id: publish_image
+        if: ${{ steps.build_image.outputs.DO_PUBLISH }}
         run: |
           docker.exe image push --all-tags $env:DOCKER_HUB_USERNAME/$env:REPO_NAME
       

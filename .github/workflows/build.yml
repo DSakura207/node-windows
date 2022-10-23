@@ -41,7 +41,7 @@ jobs:
           ./UpdateRelease.ps1
   build_and_publish:
     needs: update_release
-    if: ${{ steps.update_release.outputs.DO_BUILD || inputs.force_build }}
+    if: ${{ jobs.update_release.outputs.DO_BUILD || inputs.force_build }}
     name: Build and publish node-windows image
     strategy:
       max-parallel: 3

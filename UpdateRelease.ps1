@@ -20,9 +20,9 @@ if ($gitStatus) {
     Start-Process -FilePath "git" -ArgumentList "push" -NoNewWindow -Wait
     Write-Host "New changes checked in:"
     Write-Host $gitStatus
-    Add-Content -Value "DO_BUILD=`'true`'" -Path $env:GITHUB_OUTPUT
+    Add-Content -Value "DO_BUILD=true" -Path $env:GITHUB_OUTPUT
 }
 else {
     Write-Host "No new release detected."
-    Add-Content -Value "DO_BUILD=`'false`'" -Path $env:GITHUB_OUTPUT
+    Add-Content -Value "DO_BUILD=false" -Path $env:GITHUB_OUTPUT
 }

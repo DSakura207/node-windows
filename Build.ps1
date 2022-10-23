@@ -90,9 +90,9 @@ if ($node_major_ver) {
 
     Start-Process -FilePath docker.exe -ArgumentList $buildArg -Wait -NoNewWindow -ErrorAction Stop
 
-    Add-Content -Value "DO_PUBLISH=`'true`'" -Path $env:GITHUB_OUTPUT
+    Add-Content -Value "DO_PUBLISH=true" -Path $env:GITHUB_OUTPUT
 }
 else {
-    Add-Content -Value "DO_PUBLISH=`'false`'" -Path $env:GITHUB_OUTPUT
+    Add-Content -Value "DO_PUBLISH=false" -Path $env:GITHUB_OUTPUT
 }
 

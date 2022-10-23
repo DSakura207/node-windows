@@ -17,7 +17,7 @@ foreach ($item in $versionTable.GetEnumerator()) {
     $startDate = [datetime]::ParseExact($item.Value.start, 'yyyy-MM-dd', $null)
     $endDate = [datetime]::ParseExact($item.Value.end, 'yyyy-MM-dd', $null)
     $version = $item.Key -replace "[^0-9\.]" , ''
-    Write-Info "Determine release status for $version"
+    Write-Information "Determine release status for $version"
     if (($startDate -le $today) -and ($endDate -ge $today)) {
         if ($item.Value.lts) {
             $ltsDate = [datetime]::ParseExact($item.Value.lts, 'yyyy-MM-dd', $null)
@@ -30,15 +30,15 @@ foreach ($item in $versionTable.GetEnumerator()) {
 
         if ($isMaintenance) {
             $lifecycleTag = "maintenance"
-            Write-Info "Release is maintenance"
+            Write-Information "Release is maintenance"
         }
         elseif ($isLts) {
             $lifecycleTag = "lts"
-            Write-Info "Release is lts"
+            Write-Information "Release is lts"
         }
         else {
             $lifecycleTag = "current"
-            Write-Info "Release is current"
+            Write-Information "Release is current"
         }
         if ($buildList.ContainsKey($lifecycleTag)) {
             [int]$curTagVersion = $buildList[$lifecycleTag]
@@ -73,10 +73,10 @@ $node_major_ver = $buildList[$env:NODE_VERSION]
 if ($node_major_ver) {
     $node_full_ver = $versionTags[$node_major_ver]
 
-    Write-Info "===Build target==="
-    Write-Info "Version tag: $env:NODE_VERSION"
-    Write-Info "Major version: $node_major_ver"
-    Write-Info "Full version: $node_full_ver"
+    Write-Information "===Build target==="
+    Write-Information "Version tag: $env:NODE_VERSION"
+    Write-Information "Major version: $node_major_ver"
+    Write-Information "Full version: $node_full_ver"
 
     $buildArg = @(
         "build"

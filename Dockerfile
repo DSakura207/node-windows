@@ -18,7 +18,7 @@ FROM ${BASE_IMAGE_NAME}:${BASE_IMAGE_TAG}
 SHELL ["cmd", "/S", "/C"]
 
 # NVM version
-ARG NVM_VERSION=1.1.9
+ARG NVM_VERSION=1.1.11
 
 # Node.js version
 ARG NODE_VERSION=lts

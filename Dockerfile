@@ -47,8 +47,11 @@ RUN `
     && (del /q nvm-noinstall.zip)
 
 # Install Node.js with NVM
+# Add debug echo
 RUN `
-    nvm install %NODE_VERSION% `
+    echo nvm install %NODE_VERSION% `
+    && (echo nvm use %NODE_VERSION%) `
+    && (nvm install %NODE_VERSION%) `
     && (nvm use %NODE_VERSION%)
 
 # Smoke test

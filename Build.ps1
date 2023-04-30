@@ -32,8 +32,8 @@ foreach ($key in $versionTable.Keys) {
     
     if (($startDate -le $today) -and ($endDate -ge $today)) {
         if ($item.lts) {
-            $ltsDate = [datetime]::ParseExact($item.lts, 'yyyy-MM-dd', $null)
-            $isLts = $ltsDate -le $today
+            $ltsDate = [datetime]::ParseExact($item.lts, 'yyyy-MM-dd', $null) 
+            $isLts = $ltsDate -le $today -and ($version % 2 -eq 0)
             if ($isLts) {
                 Write-Information "✔️LTS since $ltsDate"
             }
@@ -44,8 +44,8 @@ foreach ($key in $versionTable.Keys) {
 
         if ($item.maintenance) {
             $maintenanceDate = [datetime]::ParseExact($item.maintenance, 'yyyy-MM-dd', $null)
-            $isMaintenance = $maintenanceDate -le $today
-            if ($isLts) {
+            $isMaintenance = $maintenanceDate -le $today -and ($version % 2 -eq 0)
+            if ($isMaintenance) {
                 Write-Information "✔️Maintenance since $maintenanceDate"
             }
             else {
